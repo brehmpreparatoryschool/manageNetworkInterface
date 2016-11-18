@@ -40,7 +40,7 @@
 #                 /usr/sbin/networksetup -setautoproxyurl "$i" " "
 #                 echo "Turned off auto proxy for interface $i"
 #                 echo "setting correct DNS Server"
-#                 networksetup -setdnsservers "$i" 10.0.65.20
+#                 networksetup -setdnsservers "$i" [DNS Server]
 #         done
 #     unset IFS
 #     echo "Auto proxy for all interfaces turned off"
@@ -58,7 +58,17 @@
 
 # *** CONTENT NEEDED TO CHECK FOR BREHM CAMPUS NETWORK LOCATION
 
-# If the location exists but not active, change to the Brehm Campus Location
+# List all network locations
+/usr/sbin/networksetup -listlocations
 
-echo "Changing to new network location"
+#Now we need to crosscheck our list to determine if our target of Brehm-Campus exists.
+# If -getcurrentlocation not-equals Brehm-Campus
+  # then
+    # -listlocation (Pipe) string matching for Brehm-Campus
+
+# If the location exists but not active, change to the Brehm Campus Location
+echo "Identifying current network location"
+/usr/sbin/networksetup -getcurrentlocation
+
+echo "Changing to Brehm-Campus network location"
 /usr/sbin/networksetup -switchtolocation "Brehm-Campus"
