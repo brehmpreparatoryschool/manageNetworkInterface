@@ -95,18 +95,34 @@ if [ "$EXISTINGLOCATION" == "$TARGETLOCATION" ];
             #If this passes then our Target Location is active and we can get to work.
             echo "Out Target Location matches our Current Location - you can create the USB-Serial Interface on Brehm-Campus"
 
-            #Now add the new interface to the computer - *** Check for the presence of the USB-Serial Driver install via pgkutil --pkgs
+            #Now add the new interface to the computer - *** Check for the presence of the USB-Serial Driver install via pgkutil --pkgs.
+            #We also want to confirm that mBlock is installed.
+
+            REQUIREDSERIALPKG="com.wch.usbserial.pkg"
+            SERIALPACKAGESEARCH='/usr/sbin/pkgutil --pkgs | grep "$REQUIREDSERIALPKG"'
+
+            REQUIREDAPPLICATION="mBlock"
+            # This script will search the computer using system_profiler and then look for any application matching mBlock.
+            #mBlock's application name also includes the version number, this search will ignore those characters.
+            APPLICATIONSEARCH=`system_profiler SPApplicationsDataType | grep mBlock* | awk '{print $1}' | grep mBlock |  sed -e 's/^\(.\{6\}\).*/\1/'`
+
+             if ["$REQUIREDSERIALPKG" != "$SERIALPACKAGESEARCH"] && ["$REQUIREDAPPLICATION" != "$APPLICATIONSEARCH"]; then
+                echo "Required Serial Drive is installed and mBlock is also installed on the target computer"
+
+             # NOW we need to identify the device name for the Wi-Fi interface.   
 
 
 
-
-            # NOW we need to identify the device name for the Wi-Fi interface.
+            
 
             # WIFIDEVICE=`networksetup -listallhardwareports | grep --context "Wi-Fi" | grep "Device" | awk '{print $2}'`
             # WIFIINTERFACE=`networksetup -listallhardwareports | grep --context "Wi-Fi" | grep "Hardware Port" | awk '{print $3}'`
             # echo "Adding Wi-Fi network interface"
             # /usr/sbin/networksetup -createnetworkservice $WIFIINTERFACE $WIFIDEVICE
 
+            else
+                echo "The required USB-Serial drive package has not been installed"
+                exit 0 
         fi
 
     else
