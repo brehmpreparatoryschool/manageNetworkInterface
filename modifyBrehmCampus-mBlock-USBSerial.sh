@@ -56,6 +56,8 @@
 # This could function to modify the current active location.
 # We want to only target our Brehm Campus location.
 
+# *** CONTENT NEEDED TO CHECK FOR BREHM CAMPUS NETWORK LOCATION
+
 # Development Purposes only - List all network locations - This will be removed in the final script.
 /usr/sbin/networksetup -listlocations
 
@@ -65,53 +67,15 @@
     # -listlocation (Pipe) string matching for Brehm-Campus
     #/usr/sbin/networksetup -listlocations | grep Brehm-Campus
 EXISTINGLOCATION=`/usr/sbin/networksetup -listlocations | grep Brehm-Campus`
-TARGETLOCATION="Brehm-Campus"
-
-CURRENTLOCATION=`/usr/sbin/networksetup -getcurrentlocation`
-
+TARGETLOCATION="Brehm-Campus" 
 
 if [ "$EXISTINGLOCATION" == "$TARGETLOCATION" ]; 
     then
         echo "This system has the Brehm-Campus Location"
-        # Now that we've ifentified that the needed location already exists, we can add our new USB-Serial interface.
-        if ["$CURRENTLOCATION" != "$TARGETLOCATION"]; then
-            #If this passes we need to change to the Target Location and the add the interface.
-            echo "Location exists, but it is not active.  Changing to Target Location"
-            /usr/sbin/networksetup -switchtolocation "$TARGETLOCATION"
-
-            #Now add the new interface to the computer - *** Check for the presence of the USB-Serial Driver install via pgkutil --pkgs
-
-
-
-
-            # NOW we need to identify the device name for the Wi-Fi interface.
-
-            # WIFIDEVICE=`networksetup -listallhardwareports | grep --context "Wi-Fi" | grep "Device" | awk '{print $2}'`
-            # WIFIINTERFACE=`networksetup -listallhardwareports | grep --context "Wi-Fi" | grep "Hardware Port" | awk '{print $3}'`
-            # echo "Adding Wi-Fi network interface"
-            # /usr/sbin/networksetup -createnetworkservice $WIFIINTERFACE $WIFIDEVICE
-
-        elif ["$CURRENTLOCATION" == "$TARGETLOCATION"]; then
-            #If this passes then our Target Location is active and we can get to work.
-            echo "Out Target Location matches our Current Location - you can create the USB-Serial Interface on Brehm-Campus"
-
-            #Now add the new interface to the computer - *** Check for the presence of the USB-Serial Driver install via pgkutil --pkgs
-
-
-
-
-            # NOW we need to identify the device name for the Wi-Fi interface.
-
-            # WIFIDEVICE=`networksetup -listallhardwareports | grep --context "Wi-Fi" | grep "Device" | awk '{print $2}'`
-            # WIFIINTERFACE=`networksetup -listallhardwareports | grep --context "Wi-Fi" | grep "Hardware Port" | awk '{print $3}'`
-            # echo "Adding Wi-Fi network interface"
-            # /usr/sbin/networksetup -createnetworkservice $WIFIINTERFACE $WIFIDEVICE
-
-        fi
-
     else
         echo "This system does not have the Brehm-Campus Location"
 fi
+
 
 # If the location exists but not active, change to the Brehm Campus Location
 #echo "Identifying current network location"
@@ -119,15 +83,3 @@ fi
 
 #echo "Changing to Brehm-Campus network location"
 #/usr/sbin/networksetup -switchtolocation "Brehm-Campus"
-
-
-
-
-########################################################################
-# Configure the new USB-Serial Interface for the Brehm-Campus Location #
-########################################################################
-
-
-
-
-
