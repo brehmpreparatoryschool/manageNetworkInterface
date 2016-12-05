@@ -83,3 +83,6 @@ fi
 
 #echo "Changing to Brehm-Campus network location"
 #/usr/sbin/networksetup -switchtolocation "Brehm-Campus"
+
+
+#Need to create interface "USB2.0-Serial" - this interface was not needed when I tested with a local user account.
